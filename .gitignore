@@ -1,0 +1,22 @@
+# Visual Studio
+.vs/
+*.user
+*.Studio
+
+# Build
+bin/
+obj/
+
+# Others
+*.log
+*.db
+*.sqlite
+*.mdf
+*.ldf
+
+# Environment
+.env
+
+# NuGet
+packages/
+*.nupkg
