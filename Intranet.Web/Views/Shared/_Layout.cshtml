@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -26,6 +28,21 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="user-info">
+                            <p>Bienvenido, @User.Identity.Name</p>
+
+                            @{
+                                var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                                var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                            }
+
+                            <p>Rol: @role</p>
+                            <p>Correo: @email</p>
+                        </div>
+                    }
                 </div>
             </div>
         </nav>

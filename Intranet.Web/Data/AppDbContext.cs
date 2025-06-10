@@ -6,6 +6,6 @@ public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-    public DbSet<User> Users => Set<User>();
-    public DbSet<Rol> Roles => Set<Rol>();
+    public DbSet<admUser> admUsers { get; set; }
+    public DbSet<admRol> admRoles { get; set; }
 }

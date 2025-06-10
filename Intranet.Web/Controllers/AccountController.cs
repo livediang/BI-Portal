@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Intranet.Web.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 public class AccountController : Controller
 {
@@ -13,24 +16,39 @@ public class AccountController : Controller
     public IActionResult Login() => View();
 
     [HttpPost]
-    public IActionResult Login(string nameUser, string passwordUser)
+    public async Task<IActionResult> Login(string nameUser, string passwordUser)
     {
         var user = _authService.ValidateUser(nameUser, passwordUser);
 
         if (user != null)
         {
-            HttpContext.Session.SetInt32("idUser", user.idUser);
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.nameUser),
+                new Claim(ClaimTypes.Email, user.mailUser),
+                new Claim("UserId", user.idUser.ToString()),
+                new Claim(ClaimTypes.Role, user.Rol?.nameRol ?? "SinRol")
+            };
+
+            var identity = new ClaimsIdentity(claims, "MyCookieAuth");
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync("MyCookieAuth", principal);
             return RedirectToAction("Index", "Home");
         }
 
         ViewBag.Error = "Usuario o contraseña inválidos";
-
         return View();
     }
 
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
-        HttpContext.Session.Clear();
+        await HttpContext.SignOutAsync("MyCookieAuth");
         return RedirectToAction("Login");
+    }
+
+    public IActionResult AccessDenied()
+    {
+        return View("AccessDenied");
     }
 }
