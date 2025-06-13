@@ -7,6 +7,7 @@ namespace Intranet.Web.Models
     public class admUser
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int idUser { get; set; }
         public string nameUser { get; set; }
         public string mailUser { get; set; }

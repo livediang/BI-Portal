@@ -1,0 +1,25 @@
+﻿@model Intranet.Web.Models.admUser
+@{
+    ViewBag.Title = "User Profile";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Rol</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.idUser</td>
+            <td>@Model.nameUser</td>
+            <td>@Model.mailUser</td>
+            <td>@Model.Rol?.nameRol</td>
+        </tr>
+    </tbody>
+</table>

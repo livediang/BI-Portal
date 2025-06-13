@@ -1,0 +1,38 @@
+﻿@model Intranet.Web.Models.admUser
+@{
+    ViewBag.Title = "Register new user";
+    var roles = ViewBag.Roles as List<Intranet.Web.Models.admRol>;
+}
+
+<h2>Registrar Usuario</h2>
+
+<form asp-action="Register" method="post">
+    <div>
+        <label>Nombre de usuario</label>
+        <input asp-for="nameUser" required />
+    </div>
+    <div>
+        <label>Correo</label>
+        <input asp-for="mailUser" type="email" required />
+    </div>
+    <div>
+        <label>Contraseña</label>
+        <input asp-for="passwordUser" type="password" required />
+    </div>
+    <div>
+        <label>Rol</label>
+        <select name="selectidRol" required>
+            <option value="">Seleccione un rol</option>
+            @foreach (var rol in roles)
+            {
+                <option value="@rol.idRol">@rol.nameRol</option>
+            }
+        </select>
+    </div>
+    <button type="submit">Registrar</button>
+</form>
+
+@if (TempData["Success"] != null)
+{
+    <p style="color:green;">@TempData["Success"]</p>
+}

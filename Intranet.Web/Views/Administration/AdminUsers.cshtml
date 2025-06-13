@@ -1,0 +1,28 @@
+﻿@model List<Intranet.Web.Models.admUser>
+@{
+    ViewBag.Title = "System Users";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Mail</th>
+            <th>Rol</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.idUser</td>
+                <td>@item.nameUser</td>
+                <td>@item.mailUser</td>
+                <td>@item.Rol?.nameRol</td>
+            </tr>
+        }
+    </tbody>
+</table>

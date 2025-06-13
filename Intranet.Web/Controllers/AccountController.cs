@@ -16,9 +16,9 @@ public class AccountController : Controller
     public IActionResult Login() => View();
 
     [HttpPost]
-    public async Task<IActionResult> Login(string nameUser, string passwordUser)
+    public async Task<IActionResult> Login(string mailUser, string passwordUser)
     {
-        var user = _authService.ValidateUser(nameUser, passwordUser);
+        var user = _authService.ValidateUser(mailUser, passwordUser);
 
         if (user != null)
         {
@@ -26,24 +26,24 @@ public class AccountController : Controller
             {
                 new Claim(ClaimTypes.Name, user.nameUser),
                 new Claim(ClaimTypes.Email, user.mailUser),
-                new Claim("UserId", user.idUser.ToString()),
-                new Claim(ClaimTypes.Role, user.Rol?.nameRol ?? "SinRol")
+                new Claim(ClaimTypes.NameIdentifier, user.idUser.ToString()),
+                new Claim(ClaimTypes.Role, user.Rol?.nameRol ?? "NoRol")
             };
 
-            var identity = new ClaimsIdentity(claims, "MyCookieAuth");
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
-            await HttpContext.SignInAsync("MyCookieAuth", principal);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
             return RedirectToAction("Index", "Home");
         }
 
-        ViewBag.Error = "Usuario o contraseña inválidos";
+        ViewBag.Error = "Invalid email or password";
         return View();
     }
 
     public async Task<IActionResult> Logout()
     {
-        await HttpContext.SignOutAsync("MyCookieAuth");
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Login");
     }
 

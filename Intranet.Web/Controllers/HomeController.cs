@@ -1,36 +1,42 @@
 using Intranet.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Security.Claims;
 
 namespace Intranet.Web.Controllers;
 
-[Authorize(Roles = "Administrador")]
+[Authorize]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly AppDbContext _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, AppDbContext context)
     {
         _logger = logger;
+        _context = context;
+    }
+
+    private admUser? GetCurrentUser()
+    {
+        var idUser = User.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (idUser == null) return null;
+
+        int idUserPortal = int.Parse(idUser.Value);
+
+        return _context.admUsers.Include(u => u.Rol).FirstOrDefault(u => u.idUser == idUserPortal);
     }
 
     public IActionResult Index()
     {
-        // Ejemplo de cómo obtener datos del usuario autenticado desde Claims
-        var userName = User.Identity?.Name; // Este es el nameUser
-        var email = User.FindFirst("Email")?.Value;
-        var userId = User.FindFirst("UserId")?.Value;
-        var role = User.FindFirst(ClaimTypes.Role)?.Value;
+        var dbUser = GetCurrentUser();
 
-        // Puedes pasar estos datos a la vista si lo deseas
-        ViewBag.UserName = userName;
-        ViewBag.Email = email;
-        ViewBag.UserId = userId;
-        ViewBag.Role = role;
+        if (dbUser == null) return Unauthorized();
 
-        return View();
+        return View(dbUser);
     }
 
     public IActionResult Privacy()

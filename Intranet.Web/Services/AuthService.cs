@@ -10,11 +10,11 @@ public class AuthService
         _context = context;
     }
 
-    public admUser? ValidateUser(string nameUser, string passwordUser)
+    public admUser? ValidateUser(string mailUser, string passwordUser)
     {
         var user = _context.admUsers
             .Include(u => u.Rol)
-            .FirstOrDefault(u => u.nameUser == nameUser);
+            .FirstOrDefault(u => u.mailUser == mailUser);
 
         if (user != null && BCrypt.Net.BCrypt.Verify(passwordUser, user.passwordUser))
         {
