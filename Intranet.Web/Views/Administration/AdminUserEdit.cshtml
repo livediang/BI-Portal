@@ -1,6 +1,6 @@
 ﻿@model Intranet.Web.Models.admUser
 @{
-    ViewBag.Title = "Register New User";
+    ViewBag.Title = "Edit User Information";
     var roles = ViewBag.Roles as List<Intranet.Web.Models.admRol>;
 }
 
@@ -11,7 +11,8 @@
         </div>
     </div>
     <div class="cont-nvl3">
-        <form asp-action="AdminUserRegister" method="post" class="form-reg">
+        <form asp-action="AdminUserEdit" method="post" class="form-reg">
+            <input type="hidden" asp-for="idUser" />
             <div>
                 <label>User Name</label>
                 <input asp-for="nameUser" required />
@@ -22,19 +23,15 @@
             </div>
             <div>
                 <label>Password</label>
-                <input asp-for="passwordUser" type="password" required />
+                <input asp-for="passwordUser" type="password" placeholder="Enter new password or leave blank" />
             </div>
             <div>
                 <label>Rol</label>
-                <select name="selectidRol" required>
-                    <option value="">Select any Rol</option>
-                    @foreach (var rol in roles)
-                    {
-                        <option value="@rol.idRol">@rol.nameRol</option>
-                    }
+                <select asp-for="idRol" asp-items="ViewBag.RolesList" required>
+                    <option value="">Select a Role</option>
                 </select>
             </div>
-            <button type="submit">Register New User</button>
+            <button type="submit">Update User</button>
 
             @if (TempData["Success"] != null)
             {
@@ -43,4 +40,3 @@
         </form>
     </div>
 </div>
-

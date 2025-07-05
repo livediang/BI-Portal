@@ -1,28 +1,24 @@
-﻿@model List<Intranet.Web.Models.admUser>
+﻿@model Intranet.Web.Models.AdministrationViewModel
 @{
-    ViewBag.Title = "System Users";
+    ViewBag.Title = "System Users Management";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="cont">
+    <div class="cont-nvl1">
+        <div class="title">
+            <h2>@ViewBag.Title</h2>
+        </div>
+        <div class="opt">
+            <a href="@Url.Action("AdminUsers", "Administration")"><img src="~/ico/opc-edt.png" />See all</a>
+            <a href="@Url.Action("AdminUserRegister", "Administration")"><img src="~/ico/opc-reg.png" /> Create New</a>
+        </div>
+    </div>
+    <div class="cont-nvl2">
+        <input type="text" id="searchInput" name="searchTerm" placeholder="Search by name or email" data-url="@Url.Action("AdminUsers", "Administration")" />
+    </div>
+    <div class="cont-nvl3" id="userTableContainer">
+        @await Html.PartialAsync("_UserTablePartial", Model)
+    </div>
+</div>
 
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Mail</th>
-            <th>Rol</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.idUser</td>
-                <td>@item.nameUser</td>
-                <td>@item.mailUser</td>
-                <td>@item.Rol?.nameRol</td>
-            </tr>
-        }
-    </tbody>
-</table>
+

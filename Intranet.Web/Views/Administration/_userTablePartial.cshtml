@@ -1,0 +1,42 @@
+﻿@model Intranet.Web.Models.AdministrationViewModel
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Mail</th>
+            <th>Rol</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Users)
+        {
+            <tr>
+                <td>@item.idUser</td>
+                <td>@item.nameUser</td>
+                <td>@item.mailUser</td>
+                <td>@item.Rol?.nameRol</td>
+                <td>
+                    <a title="Edit" href="@Url.Action("AdminUserEdit", "Administration", new { idUser = item.idUser })"><img src="~/ico/opc-edt.png" /></a>
+
+                    <form action="@Url.Action("AdminUserDelete", "Administration")" method="post" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                        <input type="hidden" name="idUser" value="@item.idUser" />
+                        <button type="submit" title="Delete"><img src="~/ico/opc-x.png" /></button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<nav aria-label="navigation">
+    <ul class="pagination">
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                <a class="page-link" href="@Url.Action("AdminUsers", "Administration", new { searchTerm = Model.SearchTerm, page = i })">@i</a>
+            </li>
+        }
+    </ul>
+</nav>
