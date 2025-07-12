@@ -16,6 +16,8 @@ obj/
 
 # Environment
 .env
+
+# Settings
 appsettings.json
 
 # NuGet

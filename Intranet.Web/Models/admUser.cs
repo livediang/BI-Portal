@@ -16,5 +16,7 @@ namespace Intranet.Web.Models
 
         [ForeignKey("idRol")]
         public admRol? Rol { get; set; }
+        public string PasswordResetToken { get; set; }
+        public DateTime? TokenExpiration { get; set; }
     }
 }
