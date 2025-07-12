@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Login - Password Reset";
+    Layout = "_AccountLayout";
+}
+
+<div class="wrapper">
+    <h2>@ViewData["Title"]</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="input-field">
+            <input type="email" name="mailUser" required />
+            <label>Enter your Email</label>
+        </div>
+        <div>
+            <button class="btn-send" type="submit" >Send</button>
+        </div>
+    }
+
+    @if (ViewBag.Message != null)
+    {
+        <p style="color:red;">@ViewBag.Message</p>
+    }
+</div>
+
+
+

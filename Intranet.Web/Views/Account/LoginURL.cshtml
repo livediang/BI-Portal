@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Login - URL Token";
+    Layout = "_AccountLayout";
+}
+
+<div class="wrapper">
+    <h2>@ViewData["Title"]</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="token" value="@ViewBag.Token" />
+        <div class="input-field">
+            <input type="password" name="newPassword" required />
+            <label>Enter a new password</label>
+        </div>
+        <div>
+            <button class="btn-send" type="submit">Save</button>
+        </div>
+    }
+
+    @if (ViewBag.Message != null)
+    {
+        <p style="color:red;">@ViewBag.Message</p>
+    }
+</div>
